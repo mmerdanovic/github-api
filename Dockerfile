@@ -9,12 +9,13 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # install dependencies
+RUN npm install -g typescript
 RUN npm install
 
 # Copy source code
 COPY . .
 
-RUN npm tsc
+RUN tsc
 
 EXPOSE 3000
 CMD [ "node", "./dist/server.js" ]

@@ -1,0 +1,47 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0"
+    },
+    "host": "localhost:3000",
+    "basePath": "/api/v1",
+    "schemes": [
+        "http"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/search/users/<username>": {
+            "get": {
+                "tags": [
+                    "Get GitHub user"
+                ],
+                "summary": "Search GitHub by username",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }, 
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "content": {
+                    "application/json": {}
+                },
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "URL", 
+                        "description": "Specifies the GitHub username",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            }
+        }
+    }
+}

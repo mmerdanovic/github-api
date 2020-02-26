@@ -15,6 +15,7 @@ RUN npm install
 # Copy source code
 COPY . .
 
+# Compile source code, build .dist/
 RUN tsc
 
 EXPOSE 3000

@@ -25,8 +25,8 @@ applyMiddleware(errorHandlers, router);
 const { PORT = 3000 } = process.env;
 const server = http.createServer(router);
 
-const pg = require("pg");
-pg.connect('postgres://postgres:1docker2pass3@localhost:5432/rimacapidb');
+// const pg = require("pg");
+// pg.connect('postgres://postgres:1docker2pass3@localhost:5432/rimacapidb');
 
 server.listen(PORT, () =>
     console.log(`Server is running on http://localhost:${PORT}...`)

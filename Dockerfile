@@ -6,9 +6,10 @@ WORKDIR /usr/src/app
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json and package-lock.json are grabbed
-COPY package*.json ./
+COPY package*.json .
 
-# build .dist/
+# install dependencies
+RUN npm install typescript -g
 RUN npm install
 
 # Copy source code

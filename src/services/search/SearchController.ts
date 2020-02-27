@@ -6,7 +6,7 @@ export const validUsernameRegex = /^[^-][a-zA-Z0-9-]{1,39}$/
 export const resetPopularity = async () => {
 
     const queryText = "UPDATE users SET searchedForCounter=0";
-
+    // execute query, no failsafe
     const client = new Client()
     await client.connect()
 
@@ -14,6 +14,10 @@ export const resetPopularity = async () => {
 
     await client.end()
     console.log(res)
+
+    return {
+        message: "Popularity counters successfully reset."
+    };
 }
 
 export const callGetUser = async (username: string) => {
@@ -32,6 +36,7 @@ export const callGetUser = async (username: string) => {
     const response = await getUser(username);
 
     if (response.statusCode == 200) {
+        // if user was found on github, insert into table if it's not already there otherwise increment searchedForCounter (done through SQL statement)
         console.log("incrementing search counter for: " + username)
         const query = "INSERT INTO users (username, searchedforcounter) VALUES ('" + username + "', 1)" +
             " ON CONFLICT (username) DO UPDATE" +
@@ -51,6 +56,7 @@ export const getUsersByPopularity = async (limit: number) => {
 
     console.log("limit param inside handler: " + limit)
 
+    // handle you trying to break my api on purpose
     if (isNaN(limit)) {
         console.log("Limit was not a number, setting default")
         limit = 0;
@@ -65,6 +71,7 @@ export const getUsersByPopularity = async (limit: number) => {
 
     const client = new Client()
     await client.connect()
+    // execute query without limit param if none is present
     const res = limit ? (await client.query(queryText, [limit])) : (await client.query(queryText))
     userList = JSON.parse(JSON.stringify(res.rows))
     await client.end()
@@ -93,7 +100,7 @@ export const getUsersByPopularity = async (limit: number) => {
         }
     }
 
-    // sort array by number of followers
+    // sort array by number of followers, put "nulls" at bottom <-- should never happen
     const sortedArray = packedResponseArray.sort((n1, n2) => {
         if (n1.followers > n2.followers || n2.followers == null) {
             return -1;

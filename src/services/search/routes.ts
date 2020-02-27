@@ -9,8 +9,8 @@ export default [
         method: "delete",
         handler: [
             async (req: Request, res: Response) => {
-                const result = await resetPopularity();
-                res.status(200).send(result);
+                const response = await resetPopularity();
+                res.status(200).send(response);
             }
         ]
     },
@@ -19,6 +19,7 @@ export default [
         method: "get",
         handler: [
             async (req: Request, res: Response) => {
+                // feed extracted limit param into API method
                 console.log("querystring limit param: " + req.query.limit)
                 const result = await getUsersByPopularity(req.query.limit);
                 res.status(200).send(result);

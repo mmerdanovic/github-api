@@ -7,12 +7,11 @@ export const getUser = async (username: string) => {
     try {
         console.log("trying url: " + url)
 
-        const token = Buffer.from(`mmerdanovic:Rumian2502!!`, 'utf8').toString('base64')
+        
 
         const response = await axios.get(url, {
             headers: {
-                'Accept': 'application/vnd.github.v3+json',
-                'Authorization': `Basic ${token}`
+                'Accept': 'application/vnd.github.v3+json'
             }
         })
         console.log("SUCCESS")
@@ -26,9 +25,11 @@ export const getUser = async (username: string) => {
             const client = new Client()
             await client.connect()
             try {
+                // find how many times user was RETURNED by API
                 console.log("querying DB for searchcounter")
                 const res = await client.query(queryText)
                 console.log(res.rowCount);
+                // if you cant find user, 0 counter means "we have never found this user before"
                 currentUserCounter = res.rows.length > 0 ? res.rows[0].searchedforcounter : 0;
                 console.log("currentuserCounter: " + currentUserCounter);
                 await client.end()
@@ -36,6 +37,7 @@ export const getUser = async (username: string) => {
                 console.error(error);
             }
             const payload = response.data;
+            // return planned object structure
             return {
                 user: {
                     username: username,

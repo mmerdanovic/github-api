@@ -16,6 +16,7 @@ export const clientError = (err: Error, res: Response, next: NextFunction) => {
 
 export const serverError = (err: Error, res: Response, next: NextFunction) => {
     console.error(err);
+    // dont wanna send internal trace
     if (process.env.NODE_ENV === "production") {
         res.status(500).send("Internal Server Error");
     } else {

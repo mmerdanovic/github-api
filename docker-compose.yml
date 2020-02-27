@@ -1,0 +1,23 @@
+version: "3"
+services:
+  githubapi: 
+    image: mmerdanovic/githubapi
+    ports: 
+      - 42069:3000
+    command: bash -c 'while !</dev/tcp/db/5432; do echo "postgres still not up" && sleep 1; done; npm start'
+    depends_on:
+      - db
+    environment: 
+      - DATABASE_URL=postgres://postgres:1docker2pass3@db:5432/rimacapidb
+
+  db:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1docker2pass3
+      - POSTGRES_DB=rimacapidb
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./postgres-data:/var/lib/postgresql/data

@@ -29,7 +29,7 @@ applyMiddleware(errorHandlers, router);
 const PORT = process.env.PORT;
 const server = http.createServer(router);
 
-// DB connector pulls config from environment variables
+// connect to postgre - connector pulls config from .env by default
 const client = new Client();
 client.connect(err => {
     if (err) {

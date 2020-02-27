@@ -4,9 +4,12 @@ Dockerized Node + typescript API that returns github user data and tracks popula
 ## Requirements
 
 `docker`
+
 `docker-compose.yml` and `init.sql` both provided in the root directory of this project.
 
 ## Install
+
+Navigate to the project root directory of your git clone and perform:
 
     docker-compose pull
 
@@ -127,4 +130,4 @@ Dockerized Node + typescript API that returns github user data and tracks popula
     }
 
 ## Notes
-Github API has a limit of 60 calls/hr if a user is not authenticated via HTTPBasicAuthentication or OAuth token. This app works fine without a provided login, but for safety it is best to provide a basicAuth login. You can do this by setting the `ENABLE_GIT_AUTH` environment variable located in `.env` of the root directory to `"true"` and inputing your username and password in the `GIT_USERNAME` `GIT_PASSWORD` variables. In case auth is set to true, but no credentials are provided, API will perform the call without authentication.
+Github API has a limit of 60 calls/hr if a user is not authenticated via HTTPBasicAuthentication or OAuth token. This app works fine without a provided login, but for safety it is best to provide a basicAuth login. You can do this by setting the `ENABLE_GIT_AUTH` environment variable located in `.env` of the root directory to `"true"` and inputing your username and password in the `GIT_USERNAME` `GIT_PASSWORD` variables. In case auth is set to true, but no credentials are provided, API will perform the call without authentication. In addition, Github API will always return null for "email" if no authentication is provided. This seems to be a bug in the GitHub API.

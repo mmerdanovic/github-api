@@ -7,12 +7,25 @@ export const getUser = async (username: string) => {
     try {
         console.log("trying url: " + url)
 
-        
+        const headers = {
+            'Accept': 'application/vnd.github.v3+json'
+        };
+
+        if (process.env.ENABLE_GIT_AUTH == "true" && process.env.GIT_USERNAME !== "" && process.env.GIT_PASSWORD !== "") {
+
+            console.log("Github basic authentication ENABLED, setting secret login");
+
+            const token = Buffer.from(process.env.GIT_USERNAME + ":" + process.env.GIT_PASSWORD, 'utf8').toString('base64')
+            const headers = {
+                'Accept': 'application/vnd.github.v3+json', 
+                'Authorization': 'Basic ${token}'
+            };
+        } else {
+            console.log("Github basic authentication DISABLED, proceeding without login");
+        }
 
         const response = await axios.get(url, {
-            headers: {
-                'Accept': 'application/vnd.github.v3+json'
-            }
+            headers: headers
         })
         console.log("SUCCESS")
 
@@ -28,7 +41,6 @@ export const getUser = async (username: string) => {
                 // find how many times user was RETURNED by API
                 console.log("querying DB for searchcounter")
                 const res = await client.query(queryText)
-                console.log(res.rowCount);
                 // if you cant find user, 0 counter means "we have never found this user before"
                 currentUserCounter = res.rows.length > 0 ? res.rows[0].searchedforcounter : 0;
                 console.log("currentuserCounter: " + currentUserCounter);
